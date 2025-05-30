@@ -41,14 +41,14 @@ require __DIR__.'/auth.php';
 Route::redirect('/', '/dashboard/first');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard/first', [DashboardController::class, 'getDashboardFirst'])->name('dashboard.first');
+    Route::get('/dashboard/first', [DashboardController::class, 'getDashboardFirst'])->name('dashboard.first')->middleware('permission:dashboard-list');
 
-    Route::get('/user/list', [UserController::class, 'getUserList'])->name('user.index');
-    Route::get('/user/create', [UserController::class, 'getUserForm'])->name('user.create');
-    Route::post('/user/store', [UserController::class, 'storeUser']);
-    Route::get('/user/delete/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
-    Route::get('/user/edit/{id}', [UserController::class, 'editUser'])->name('user.edit');
-    Route::put('/user/update/{id}', [UserController::class, 'updateUser'])->name('user.update');
+    Route::get('/user/list', [UserController::class, 'getUserList'])->name('user.index')->middleware('permission:user-list');
+    Route::get('/user/create', [UserController::class, 'getUserForm'])->name('user.create')->middleware('permission:user-create');
+    Route::post('/user/store', [UserController::class, 'storeUser'])->middleware('permission:user-create');
+    Route::get('/user/delete/{id}', [UserController::class, 'deleteUser'])->name('user.delete')->middleware('permission:user-delete');
+    Route::get('/user/edit/{id}', [UserController::class, 'editUser'])->name('user.edit')->middleware('permission:user-edit');
+    Route::put('/user/update/{id}', [UserController::class, 'updateUser'])->name('user.update')->middleware('permission:user-update');
 
     Route::get('/employee/list', [EmployeeController::class, 'getemployeeList'])->name('employee.index');
     Route::get('/employee/create', [EmployeeController::class, 'getemployeeForm'])->name('employee.create');

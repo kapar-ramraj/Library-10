@@ -13,6 +13,14 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:book-list', ['only' => ['index']]);
+        $this->middleware('permission:book-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:book-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:book-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

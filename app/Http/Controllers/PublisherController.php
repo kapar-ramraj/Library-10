@@ -9,6 +9,14 @@ use Illuminate\Validation\Rule;
 
 class PublisherController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:publisher-list', ['only' => ['index']]);
+        $this->middleware('permission:publisher-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:publisher-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:publisher-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

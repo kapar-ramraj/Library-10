@@ -14,6 +14,14 @@ use Illuminate\Validation\Rule;
 
 class BookLoanController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:bookloan-list', ['only' => ['index']]);
+        $this->middleware('permission:bookloan-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:bookloan-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:bookloan-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -111,7 +119,7 @@ class BookLoanController extends Controller
         ]);
 
         $bookLoan->update($validateData);
-        return redirect('book-loans'.'?'.$request->queryString)->with('status', 'Book data updated successfully.');
+        return redirect('book-loans' . '?' . $request->queryString)->with('status', 'Book data updated successfully.');
     }
 
     /**

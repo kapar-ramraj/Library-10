@@ -8,6 +8,14 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:category-list', ['only' => ['index']]);
+        $this->middleware('permission:category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:category-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:category-delete', ['only' => ['destroy']]);
+    }
+
     // Display all categories
     public function index()
     {

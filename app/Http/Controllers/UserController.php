@@ -8,6 +8,13 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:role-list', ['only' => ['getUserList']]);
+        $this->middleware('permission:role-create', ['only' => ['getUserForm', 'storeUser']]);
+        $this->middleware('permission:role-edit', ['only' => ['editUser', 'updateUser']]);
+        $this->middleware('permission:role-delete', ['only' => ['deleteUser']]);
+    }
 
     public function getUserList()
     {

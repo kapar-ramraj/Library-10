@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class AuthorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:author-list', ['only' => ['index']]);
+        $this->middleware('permission:author-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:author-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:author-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */
