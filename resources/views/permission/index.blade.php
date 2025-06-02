@@ -35,6 +35,10 @@
                                 @endif
 
                                 <h3 class="card-title">Permission List</h3>
+                                <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                                    data-target="#create-permission">
+                                    Create Permission
+                                </button>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body table-responsive p-0">
@@ -57,8 +61,10 @@
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->guard_name }}</td>
                                                 <td>
-                                                    <a href="{{ route('permissions.edit', $item->id) }}"
-                                                        class="btn btn-sm btn-primary"><i
+                                                    <a href="#"
+                                                        data-route="{{ route('permissions.edit', $item->id) }}"
+                                                        class="btn btn-sm btn-primary" data-toggle="modal"
+                                                        data-target="#edit-permission"><i
                                                             class="fa-solid fa-pencil"></i></a>
                                                 </td>
                                             </tr>
@@ -86,6 +92,70 @@
             </div>
         </section>
     </div>
+
+    <div class="modal fade" id="edit-permission">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Permission</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputname1">Name</label>
+                        <input type="text" class="form-control" id="exampleInputname1" placeholder="name" name="name"
+                            value="{{ old('name') }}">
+                        @error('name')
+                            <p class="text-danger">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="create-permission">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create Permission</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputname1">Name</label>
+                        <input type="text" class="form-control" id="exampleInputname1" placeholder="name" name="name"
+                            value="{{ old('name') }}">
+                        @error('name')
+                            <p class="text-danger">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
     <!-- /.card -->
 @endsection
 
@@ -120,7 +190,7 @@
                 }
             });
 
-            $(document).on('click','.delete-item', function(e) {
+            $(document).on('click', '.delete-item', function(e) {
                 let routeDelete = $(this).data('route');
                 Swal.fire({
                     title: "Are you sure?",
@@ -149,7 +219,7 @@
 
                                     setTimeout(function() {
                                         location.reload()
-                                    .fadeIn(); // Or .show()
+                                            .fadeIn(); // Or .show()
                                     }, 2000); // 2000 milliseconds = 2 seconds
                                 } else {
                                     Swal.fire({
