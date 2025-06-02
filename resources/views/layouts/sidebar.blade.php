@@ -233,11 +233,44 @@
                     </ul>
                 </li>
 
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ Request::is('permissions*') ? 'active' : '' }} {{ Request::is('roles*') ? 'active' : '' }}">
+                        &nbsp;<i class="fas fa-book"></i>
+                        &nbsp;
+                        <p>
+                            User Roles
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('permissions.index')}}" class="nav-link {{ Route::is('permissions.index') ? 'active' : '' }}">
+                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp; 
+                                <p>Permission List</p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="{{route('roles.index')}}" class="nav-link {{ Route::is('roles.index') ? 'active' : '' }}"  >
+                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
+                                <p>Role List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 {{-- @endif --}}
                 <li class="nav-item active">
                     <a href="{{route('student.profile')}}" class="nav-link">
                      &nbsp;<i class="fa fa-id-badge" aria-hidden="true"></i>&nbsp;
                         Profile
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a href="{{route('change.password')}}" class="nav-link">
+                     &nbsp;<i class="fa fa-lock" aria-hidden="true"></i>&nbsp;
+                        Change Password
                     </a>
                 </li>
 

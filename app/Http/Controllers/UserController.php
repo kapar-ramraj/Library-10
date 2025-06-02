@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -73,5 +74,24 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update($validateData);
         return redirect()->route('user.index')->with('status', 'User updated successfully.');
+    }
+
+    public function changePassword()
+    {
+        return view('user.change_password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        // If validation passes, update the password
+        $user = auth()->user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return back()->with('success', 'Password updated successfully.');
     }
 }

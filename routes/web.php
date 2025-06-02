@@ -8,7 +8,9 @@ use App\Http\Controllers\BookLoanController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 /*
@@ -50,6 +52,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/edit/{id}', [UserController::class, 'editUser'])->name('user.edit')->middleware('permission:user-edit');
     Route::put('/user/update/{id}', [UserController::class, 'updateUser'])->name('user.update')->middleware('permission:user-update');
 
+    Route::get('/change/password', [UserController::class, 'changePassword'])->name('change.password');
+
+    Route::post('/change/password', [UserController::class, 'updatePassword'])->name('change.password');
+
     Route::get('/employee/list', [EmployeeController::class, 'getemployeeList'])->name('employee.index');
     Route::get('/employee/create', [EmployeeController::class, 'getemployeeForm'])->name('employee.create');
     Route::post('/employee/store', [EmployeeController::class, 'storeemployee']);
@@ -71,6 +77,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('books', BookController::class);
     Route::resource('book-loans', BookLoanController::class);
+
+    Route::resource('permissions', PermissionController::class);
+
+    Route::resource('roles', RoleController::class);
 
 
 });
