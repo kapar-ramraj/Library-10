@@ -64,9 +64,52 @@
                                                     <a href="#"
                                                         data-route="{{ route('permissions.edit', $item->id) }}"
                                                         class="btn btn-sm btn-primary" data-toggle="modal"
-                                                        data-target="#edit-permission"><i
+                                                        data-target="#edit-permission{{$item->id}}"><i
                                                             class="fa-solid fa-pencil"></i></a>
                                                 </td>
+
+                                                {{-- Edit Modal --}}
+                                                <div class="modal fade" id="edit-permission{{$item->id}}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Edit Permission</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form action="{{ route('permissions.update', $item->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="exampleInputname1">Name</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="exampleInputname1"
+                                                                            placeholder="Permission name" name="name"
+                                                                            value="{{ old('name') ?? $item->name }}">
+                                                                        @error('name')
+                                                                            <p class="text-danger">
+                                                                                {{ $message }}
+                                                                            </p>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer justify-content-between">
+                                                                    <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Close</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Update</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- End of Edit Modal -->
                                             </tr>
                                         @endforeach
 
@@ -93,7 +136,7 @@
         </section>
     </div>
 
-    <div class="modal fade" id="edit-permission">
+    {{-- <div class="modal fade" id="edit-permission">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -102,29 +145,32 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="exampleInputname1">Name</label>
-                        <input type="text" class="form-control" id="exampleInputname1" placeholder="name" name="name"
-                            value="{{ old('name') }}">
-                        @error('name')
-                            <p class="text-danger">
-                                {{ $message }}
-                            </p>
-                        @enderror
+                <form action="{{route('permissions.update',$item->id)}}" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputname1">Name</label>
+                            <input type="text" class="form-control" id="exampleInputname1" placeholder="Permission name" name="name"
+                                value="{{ old('name') }}">
+                            @error('name')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Update</button>
-                </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-    </div>
+    </div> --}}
     <!-- /.modal -->
 
+    {{-- Create Permission Modal --}}
     <div class="modal fade" id="create-permission">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -134,22 +180,25 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="exampleInputname1">Name</label>
-                        <input type="text" class="form-control" id="exampleInputname1" placeholder="name" name="name"
-                            value="{{ old('name') }}">
-                        @error('name')
-                            <p class="text-danger">
-                                {{ $message }}
-                            </p>
-                        @enderror
+                <form action="{{ route('permissions.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter permission name"
+                                name="name" value="{{ old('name') }}">
+                            @error('name')
+                                <p class="text-danger">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Update</button>
-                </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
             </div>
             <!-- /.modal-content -->
         </div>
