@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/store', [UserController::class, 'storeUser'])->middleware('permission:user-create');
     Route::get('/user/delete/{id}', [UserController::class, 'deleteUser'])->name('user.delete')->middleware('permission:user-delete');
     Route::get('/user/edit/{id}', [UserController::class, 'editUser'])->name('user.edit')->middleware('permission:user-edit');
-    Route::put('/user/update/{id}', [UserController::class, 'updateUser'])->name('user.update')->middleware('permission:user-update');
+    Route::put('/user/update/{id}', [UserController::class, 'updateUser'])->name('user.update')->middleware('permission:user-edit');
 
     Route::get('/change/password', [UserController::class, 'changePassword'])->name('change.password');
 

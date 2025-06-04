@@ -8,6 +8,14 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:role-list', ['only' => ['index', 'show']]);
+        $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -55,17 +63,26 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Role $role)
     {
-        //
+        $permissions = Permission::all();
+        $chunks = $permissions->chunk(4);
+        $assignedPermissions = $role->permissions->pluck('name')->toArray();
+        // dd($assignedPermissions);
+        return view('role.edit', compact('chunks', 'assignedPermissions', 'role'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        // dd($request->all());
+        $roleName = $request->name;
+        $permissions = $request->permission;
+        $role->update(['name' => $roleName]);
+        $role->syncPermissions($permissions);
+        return redirect()->back()->with('success', 'Role updated successfully.');
     }
 
     /**

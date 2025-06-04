@@ -57,7 +57,7 @@
                     </li>
                 @endcan
                 
-                @can('user-list')
+                @canany(['user-list','user-create'])
                     <li class="nav-item">
                         <a href="#" class="nav-link {{ Request::is('user*') ? 'active' : '' }}">
                             &nbsp;<i class="fa fa-users" aria-hidden="true"></i>&nbsp;
@@ -81,32 +81,8 @@
                             </li>
                         </ul>
                     </li>
-                @endcan
+                @endcanany
                 
-                {{-- <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>
-                            Employees
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('employee.index')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Employee List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('employee.create')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create Employee</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li> --}}
-
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ Request::is('categories*') ? 'active' : '' }}">
                        &nbsp;<i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;
@@ -206,33 +182,38 @@
                         </li>
                     </ul>
                 </li>
+                @canany(['bookloan-list','bookloan-create'])
+                    <li class="nav-item">
+                        <a href="#" class="nav-link {{ Request::is('book-loans*') ? 'active' : '' }}">
+                            &nbsp;<i class="fas fa-book"></i>
+                            &nbsp;
+                            <p>
+                                Book Loans
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('bookloan-list')
+                            <li class="nav-item">
+                                <a href="{{route('book-loans.index')}}" class="nav-link {{ Route::is('book-loans.index') ? 'active' : '' }}">
+                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp; 
+                                    <p>Book loans List</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('bookloan-create')
+                            <li class="nav-item">
+                                <a href="{{route('book-loans.create')}}" class="nav-link {{ Route::is('book-loans.create') ? 'active' : '' }}"  >
+                                    &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                                    <p>Create Book loans</p>
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link {{ Request::is('book-loans*') ? 'active' : '' }}">
-                        &nbsp;<i class="fas fa-book"></i>
-                        &nbsp;
-                        <p>
-                            Book Loans
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('book-loans.index')}}" class="nav-link {{ Route::is('book-loans.index') ? 'active' : '' }}">
-                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp; 
-                                <p>Book loans List</p>
-                            </a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a href="{{route('book-loans.create')}}" class="nav-link {{ Route::is('book-loans.create') ? 'active' : '' }}"  >
-                                &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
-                                <p>Create Book loans</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
+                @canany(['role-list','permission-list'])
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ Request::is('permissions*') ? 'active' : '' }} {{ Request::is('roles*') ? 'active' : '' }}">
                         &nbsp;<i class="fas fa-book"></i>
@@ -243,21 +224,25 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('permissions.index')}}" class="nav-link {{ Route::is('permissions.index') ? 'active' : '' }}">
-                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp; 
-                                <p>Permission List</p>
-                            </a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a href="{{route('roles.index')}}" class="nav-link {{ Route::is('roles.index') ? 'active' : '' }}"  >
-                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
-                                <p>Role List</p>
-                            </a>
-                        </li>
+                        @can('permission-list')
+                            <li class="nav-item">
+                                <a href="{{route('permissions.index')}}" class="nav-link {{ Route::is('permissions.index') ? 'active' : '' }}">
+                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp; 
+                                    <p>Permission List</p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('role-list')
+                            <li class="nav-item">
+                                <a href="{{route('roles.index')}}" class="nav-link {{ Route::is('roles.index') ? 'active' : '' }}"  >
+                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
+                                    <p>Role List</p>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
+                @endcanany
 
                 {{-- @endif --}}
                 <li class="nav-item active">

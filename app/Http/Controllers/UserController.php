@@ -6,26 +6,28 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:role-list', ['only' => ['getUserList']]);
-        $this->middleware('permission:role-create', ['only' => ['getUserForm', 'storeUser']]);
-        $this->middleware('permission:role-edit', ['only' => ['editUser', 'updateUser']]);
-        $this->middleware('permission:role-delete', ['only' => ['deleteUser']]);
+        $this->middleware('permission:user-list', ['only' => ['getUserList']]);
+        $this->middleware('permission:user-create', ['only' => ['getUserForm', 'storeUser']]);
+        $this->middleware('permission:user-edit', ['only' => ['editUser', 'updateUser']]);
+        $this->middleware('permission:user-delete', ['only' => ['deleteUser']]);
     }
 
     public function getUserList()
     {
-        $users = User::all(); // User::get();
+        $users = User::with('roles')->get(); // User::get();
         return view('user.index', compact('users'));
     }
     public function getUserForm()
     {
         $users = User::all(); // User::get();
-        return view('user.create', compact('users'));
+        $roles = Role::all();
+        return view('user.create', compact('users', 'roles'));
     }
 
     public function storeUser(Request $request)
@@ -34,6 +36,7 @@ class UserController extends Controller
             'fname' => ['required', 'string', 'max:255'],
             'lname' => ['string', 'max:255'],
             'phone' => ['string', 'max:20'],
+            'role_name' => ['nullable'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
         ], [
@@ -42,7 +45,10 @@ class UserController extends Controller
         ]);
 
         // dd($validateData);
-        User::create($validateData);
+        $user = User::create($validateData);
+        if (!empty($validateData['role_name'])) {
+            $user->assignRole($validateData['role_name']);
+        }
         return redirect()->route('user.index')->with('status', 'User data stored successfully.');
     }
 
@@ -56,7 +62,9 @@ class UserController extends Controller
     public function editUser($id)
     {
         $user = User::findOrFail($id);
-        return view('user.edit', ['user' => $user]);
+        $roles = Role::all();
+        $useAssignedRole = $user->roles->pluck('name')->toArray();
+        return view('user.edit', ['user' => $user, 'roles' => $roles, 'useAssignedRole' => $useAssignedRole]);
     }
 
     public function updateUser(Request $request, $id)
@@ -66,6 +74,7 @@ class UserController extends Controller
             'fname' => ['required', 'string', 'max:255'],
             'lname' => ['string', 'max:255'],
             'phone' => ['string', 'max:20'],
+            'role_name' => ['nullable'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
         ], [
             'fname:required' => 'The First Name field is required!',
@@ -73,6 +82,10 @@ class UserController extends Controller
         ]);
         $user = User::findOrFail($id);
         $user->update($validateData);
+
+        if (!empty($validateData['role_name'])) {
+            $user->assignRole($validateData['role_name']);
+        }
         return redirect()->route('user.index')->with('status', 'User updated successfully.');
     }
 

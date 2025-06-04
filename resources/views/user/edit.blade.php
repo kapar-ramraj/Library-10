@@ -63,7 +63,22 @@
                                             </p>
                                         @enderror
                                     </div>
-                                    
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Role </label>
+                                        <select  class="form-control" id="role_name"
+                                             name="role_name" required>
+                                        <option value="">Select Role </option>
+                                        @foreach ($roles as $item)
+                                        <option value="{{$item->name}}" {{in_array($item->name,$useAssignedRole) ? 'selected' : ''}}>{{$item->name }}</option>
+                                        @endforeach
+                                        </select>
+                                        @error('role_name')
+                                            <p class="text-danger">
+                                                {{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
 
                                 </div>
                                 <!-- /.card-body -->

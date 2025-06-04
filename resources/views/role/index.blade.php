@@ -58,11 +58,10 @@
                                                 <td>{{ $sn++ }}</td>
                                                 <td>{{ $item->name }}</td>
                                                 <td>
-                                                    <a href="#"
-                                                        data-route="{{ route('roles.edit', $item->id) }}"
-                                                        class="btn btn-sm btn-primary" data-toggle="modal"
-                                                        data-target="#edit-Role{{$item->id}}"><i
-                                                            class="fa-solid fa-pencil"></i></a>
+                                                    <a href="{{ route('roles.edit', $item->id) }}"
+                                                        class="btn btn-sm btn-primary" >
+                                                        <i class="fa-solid fa-pencil"></i>
+                                                    </a>
                                                 </td>
 
                                             </tr>
