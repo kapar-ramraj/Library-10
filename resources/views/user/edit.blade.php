@@ -63,7 +63,21 @@
                                             </p>
                                         @enderror
                                     </div>
-
+                                    <div class="form-group">
+                                        <label for="user_type">User Type </label>
+                                        <select  class="form-control" id="user_type"
+                                             name="user_type" required>
+                                        <option value="">Select User Type </option>
+                                        @foreach (config('custom.user_types') as $item)
+                                        <option value="{{$item}}" {{$user->user_type == $item ? 'selected' : ''}}>{{ $item }}</option>
+                                        @endforeach
+                                        </select>
+                                        @error('user_type')
+                                            <p class="text-danger">
+                                                {{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Role </label>
                                         <select  class="form-control" id="role_name"

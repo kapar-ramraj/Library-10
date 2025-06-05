@@ -67,46 +67,56 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{route('user.index')}}" class="nav-link {{ Route::is('user.index') ? 'active' : '' }}">
-                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
-                                    <p>User List</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('user.create')}}" class="nav-link {{ Route::is('user.create') ? 'active' : '' }}">
-                                    &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
-                                    <p>Create User</p>
-                                </a>
-                            </li>
+                            @can('user-list')
+                                <li class="nav-item">
+                                    <a href="{{route('user.index')}}" class="nav-link {{ Route::is('user.index') ? 'active' : '' }}">
+                                        &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
+                                        <p>User List</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('user-create')
+                                <li class="nav-item">
+                                    <a href="{{route('user.create')}}" class="nav-link {{ Route::is('user.create') ? 'active' : '' }}">
+                                        &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                                        <p>Create User</p>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
                 @endcanany
-                
-                <li class="nav-item">
-                    <a href="#" class="nav-link {{ Request::is('categories*') ? 'active' : '' }}">
-                       &nbsp;<i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;
-                        <p>
-                            Categories
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('categories.index')}}" class="nav-link {{ Route::is('categories.index') ? 'active' : '' }}">
-                                &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
-                                <p>Categories List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('categories.create')}}" class="nav-link {{ Route::is('categories.create') ? 'active' : '' }}">
-                                &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
-                                <p>Create Category</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @canany(['category-list','category-create'])
+                    <li class="nav-item">
+                        <a href="#" class="nav-link {{ Request::is('categories*') ? 'active' : '' }}">
+                        &nbsp;<i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;
+                            <p>
+                                Categories
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @can('category-list')
+                            <li class="nav-item">
+                                <a href="{{route('categories.index')}}" class="nav-link {{ Route::is('categories.index') ? 'active' : '' }}">
+                                    &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
+                                    <p>Categories List</p>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('category-create')
+                            <li class="nav-item">
+                                <a href="{{route('categories.create')}}" class="nav-link {{ Route::is('categories.create') ? 'active' : '' }}">
+                                    &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                                    <p>Create Category</p>
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcanany
 
+                @canany(['publisher-list','publisher-create'])
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ Request::is('publishers*') ? 'active' : '' }}">
                         &nbsp;<i class="fas fa-newspaper"></i>&nbsp;
@@ -116,22 +126,27 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @can('publisher-list')
                         <li class="nav-item">
                             <a href="{{route('publishers.index')}}" class="nav-link {{ Route::is('publishers.index') ? 'active' : '' }}">
                                 &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp;
                                 <p>Publishers List</p>
                             </a>
                         </li>
-                        
+                        @endcan
+                        @can('publisher-create')
                         <li class="nav-item">
                             <a href="{{route('publishers.create')}}" class="nav-link {{ Route::is('publishers.create') ? 'active' : '' }}"  >
                                 &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
                                 <p>Create Publisher</p>
                             </a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
+                @endcanany
 
+                @canany(['author-list','author-create'])
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ Request::is('authors*') ? 'active' : '' }}">
                         &nbsp;<i class="fas fa-pen-nib"></i>&nbsp;
@@ -141,22 +156,27 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @can('author-list')
                         <li class="nav-item">
                             <a href="{{route('authors.index')}}" class="nav-link {{ Route::is('authors.index') ? 'active' : '' }}">
                                 &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp; 
                                 <p>Authors List</p>
                             </a>
                         </li>
-                        
+                        @endcan
+                        @can('author-create')
                         <li class="nav-item">
                             <a href="{{route('authors.create')}}" class="nav-link {{ Route::is('authors.create') ? 'active' : '' }}"  >
                                 &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
                                 <p>Create Authors</p>
                             </a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
+                @endcanany
 
+                @canany(['book-list','book-create'])
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ Request::is('books*') ? 'active' : '' }}">
                         &nbsp;<i class="fas fa-book"></i>
@@ -167,21 +187,25 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @can('book-list')
                         <li class="nav-item">
                             <a href="{{route('books.index')}}" class="nav-link {{ Route::is('books.index') ? 'active' : '' }}">
                                 &nbsp;<i class="fa fa-list" aria-hidden="true"></i>&nbsp; 
                                 <p>Books List</p>
                             </a>
                         </li>
-                        
+                        @endcan
+                        @can('book-create')
                         <li class="nav-item">
                             <a href="{{route('books.create')}}" class="nav-link {{ Route::is('books.create') ? 'active' : '' }}"  >
                                 &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
                                 <p>Create books</p>
                             </a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
+                @endcanany
                 @canany(['bookloan-list','bookloan-create'])
                     <li class="nav-item">
                         <a href="#" class="nav-link {{ Request::is('book-loans*') ? 'active' : '' }}">

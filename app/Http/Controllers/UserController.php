@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendUserCredentials;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 
@@ -39,24 +41,30 @@ class UserController extends Controller
             'role_name' => ['nullable'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
+            'user_type' => ['required']
         ], [
             'fname:required' => 'The First Name field is required!',
             'fname:max' => 'The First Name field lenght must not be greater than 255 characters!',
         ]);
 
         // dd($validateData);
+        $userPassword = $validateData['password'];
+        $validateData['password'] = Hash::make($validateData['password']);
         $user = User::create($validateData);
         if (!empty($validateData['role_name'])) {
             $user->assignRole($validateData['role_name']);
         }
-        return redirect()->route('user.index')->with('status', 'User data stored successfully.');
+        // Send email with credentials
+        Mail::to($user->email)->send(new SendUserCredentials($user->email, $userPassword, $user->fname.' '.$user->lname));
+
+        return redirect()->route('user.index')->with('success', 'User data stored successfully.');
     }
 
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->back()->with('status', 'User deleted successfully.');
+        return redirect()->back()->with('success', 'User deleted successfully.');
     }
 
     public function editUser($id)
@@ -75,6 +83,7 @@ class UserController extends Controller
             'lname' => ['string', 'max:255'],
             'phone' => ['string', 'max:20'],
             'role_name' => ['nullable'],
+            'user_type' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
         ], [
             'fname:required' => 'The First Name field is required!',
@@ -86,7 +95,7 @@ class UserController extends Controller
         if (!empty($validateData['role_name'])) {
             $user->assignRole($validateData['role_name']);
         }
-        return redirect()->route('user.index')->with('status', 'User updated successfully.');
+        return redirect()->route('user.index')->with('success', 'User updated successfully.');
     }
 
     public function changePassword()
